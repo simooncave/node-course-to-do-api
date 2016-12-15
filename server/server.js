@@ -11,10 +11,14 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
+// CREATE
+
 app.post('/todos', (req, res) => {
   var todo = new Todo({
     text: req.body.text
   });
+
+// SAVE
 
   todo.save().then((doc) => {
     res.send(doc);
@@ -22,6 +26,8 @@ app.post('/todos', (req, res) => {
     res.status(400).send(e);
   });
 });
+
+// FIND
 
 app.get('/todos', (req, res) => {
   Todo.find().then((todos) => {
@@ -31,7 +37,9 @@ app.get('/todos', (req, res) => {
   })
 });
 
-// GET /todos/1223345
+
+// GET ONE INDIVIDUAL NOTE
+
 app.get('/todos/:id', (req, res) => {
   var id = req.params.id;
 
@@ -51,6 +59,8 @@ Todo.findById(id).then((todo) => {
 
 });
 
+//DELETE A NOTE
+
 app.delete('/todos/:id', (req, res) => {
   var id = req.params.id;
 
@@ -64,7 +74,7 @@ app.delete('/todos/:id', (req, res) => {
       return res.status(404).send();
     }
 
-    res.send(todo);
+    res.send({todo});
   }).catch((e) => {
     res.status(400).send();
   });
